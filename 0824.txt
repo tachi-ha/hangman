@@ -1,0 +1,60 @@
+# coding: utf-8
+# 自分の得意な言語で
+# Let's チャレンジ！！
+
+def stop_hantei(hi,wi,sy,sx,board_ls):
+    flg = False
+    if sy<0 or sx<0 or sy>hi-1 or sx>wi-1:
+        flg =True
+    elif board_ls[sy][sx] == "#" or board_ls[sy][sx] != ".":
+        flg = True
+    return flg
+
+h,w = list(map(int,input().split()))
+board = []
+for i in range(h):
+    line_ls = [ch for ch in input()]
+    if "*" in line_ls:
+        y,x = (i,line_ls.index("*"))
+        line_ls[x] = "0"
+    board.append(line_ls)
+
+'''
+h=5
+w=5
+board = [[".",".",".",".","."],[".",".",".",".","."],[".",".","*",".","."],[".",".",".",".","."],[".",".",".",".","."]]
+y=2
+x=2
+'''
+
+jinchi = []
+jinchi.append([(y,x)])
+todo_ls = [(-1,0),(1,0),(0,-1),(0,1)]
+cycle = 0
+
+while True:#cycle < len(jinchi):
+    pos_ls = jinchi[cycle]
+    #print(pos_ls)
+    #print(pos_ls[0])
+    buff = []
+    
+    for pos in pos_ls:
+        y = pos[0]
+        x = pos[1]
+    
+        for move in todo_ls:
+            y1 = y+move[0]
+            x1 = x+move[1]
+            if not stop_hantei(h,w,y1,x1,board):
+                board[y1][x1] = str(cycle + 1)
+                buff.append((y1,x1))
+    
+    if buff == []:
+        break
+    else:
+        cycle += 1
+        jinchi.append(buff)
+        #print(jinchi)    
+
+for line in board:
+    print("".join(line))
